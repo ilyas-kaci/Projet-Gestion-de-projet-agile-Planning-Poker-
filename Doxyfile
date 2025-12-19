@@ -118,7 +118,6 @@ INPUT                  = config.py \
                          io_helpers.py \
                          models.py \
                          main.py \
-                         test_planning_poker.py \
                          README.md
 FILE_PATTERNS          = *.py \
                          *.md \
@@ -128,7 +127,6 @@ EXCLUDE                = __pycache__/ \
                          venv/ \
                          .git/ \
                          .github/ \
-                         docs/ \
                          old_versions/ \
                          projet_ppgp.py  # Exclure l'ancienne version
 EXCLUDE_SYMLINKS       = NO
