@@ -11,25 +11,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Install Doxygen
-        run: sudo apt-get install doxygen graphviz -y
+    - name: Install Doxygen and Graphviz
+      run: sudo apt-get install -y doxygen graphviz
 
-      - name: Build Doxygen documentation
-        run: doxygen Doxyfile
+    - name: Create docs directory
+      run: mkdir -p docs
 
-      # === AJOUTEZ CETTE ÉTAPE ===
-      - name: Upload documentation artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: doxygen-documentation
-          path: ./docs/html
-          retention-days: 5
+    - name: Generate Doxygen documentation
+      run: |
+        echo "=== DÉBUT GÉNÉRATION DOXYGEN ==="
+        doxygen Doxyfile
+        echo "=== FIN GÉNÉRATION ==="
 
-      #- name: Deploy to GitHub Pages
-      #  uses: peaceiris/actions-gh-pages@v3
-      #  with:
-      #    github_token: ${{ secrets.GITHUB_TOKEN }}
-      #    publish_dir: ./docs/html
+    - name: Verify documentation was generated
+      run: |
+        if [ -d "docs/html" ]; then
+          echo "✅ SUCCÈS : Documentation générée dans docs/html/"
+          echo "📁 Contenu :"
+          ls -la docs/html/
+        else
+          echo "❌ ÉCHEC : docs/html non créé"
+          echo "Vérifiez le Doxyfile et les fichiers source"
+          exit 1
+        fi
+
+    - name: Upload documentation as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: doxygen-documentation
+        path: docs/html
+        retention-days: 5
