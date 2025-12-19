@@ -1,46 +1,13 @@
-name: Generate Doxygen Docs
-
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
+name: Docs
+on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
-    - name: Install Doxygen and Graphviz
-      run: sudo apt-get install -y doxygen graphviz
-
-    - name: Create docs directory
-      run: mkdir -p docs
-
-    - name: Generate Doxygen documentation
-      run: |
-        echo "=== DÉBUT GÉNÉRATION DOXYGEN ==="
-        doxygen Doxyfile
-        echo "=== FIN GÉNÉRATION ==="
-
-    - name: Verify documentation was generated
-      run: |
-        if [ -d "docs/html" ]; then
-          echo "✅ SUCCÈS : Documentation générée dans docs/html/"
-          echo "📁 Contenu :"
-          ls -la docs/html/
-        else
-          echo "❌ ÉCHEC : docs/html non créé"
-          echo "Vérifiez le Doxyfile et les fichiers source"
-          exit 1
-        fi
-
-    - name: Upload documentation as artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: doxygen-documentation
-        path: docs/html
-        retention-days: 5
+      - uses: actions/checkout@v2
+      - run: sudo apt install doxygen graphviz -y
+      - run: doxygen Doxyfile
+      - uses: actions/upload-artifact@v2
+        with:
+          name: doxygen-docs
+          path: docs
