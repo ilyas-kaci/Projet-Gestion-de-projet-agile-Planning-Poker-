@@ -20,9 +20,16 @@ jobs:
       - name: Build Doxygen documentation
         run: doxygen Doxyfile
 
+      # === AJOUTEZ CETTE ÉTAPE ===
+      - name: Upload documentation artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: doxygen-documentation
+          path: ./docs/html
+          retention-days: 5
+
       #- name: Deploy to GitHub Pages
-       # uses: peaceiris/actions-gh-pages@v3
-        #with:
-         # github_token: ${{ secrets.GITHUB_TOKEN }}
-          #publish_dir: ./docs/html
-#
+      #  uses: peaceiris/actions-gh-pages@v3
+      #  with:
+      #    github_token: ${{ secrets.GITHUB_TOKEN }}
+      #    publish_dir: ./docs/html
