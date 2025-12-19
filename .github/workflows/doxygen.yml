@@ -4,7 +4,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: sudo apt install doxygen graphviz -y
       - run: doxygen Doxyfile
       - uses: actions/upload-artifact@v2
